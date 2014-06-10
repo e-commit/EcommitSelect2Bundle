@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class Select2EntityType extends AbstractType
+class Select2EntityAjaxType extends AbstractType
 {
     /**
      * @var ManagerRegistry
@@ -170,6 +170,6 @@ class Select2EntityType extends AbstractType
      */
     public function getName()
     {
-        return 'ecommit_select2_select2entity';
+        return 'ecommit_javascript_select2entityajax';
     }
 } 
