@@ -17,7 +17,9 @@
                             }
                         },
                         results: function (data, page) {
-                            return {results: data };
+                            var more = page < data.totalPages;
+
+                            return {results: data.results, more: more };
                         }
                     },
                     formatResult: function (data) {
