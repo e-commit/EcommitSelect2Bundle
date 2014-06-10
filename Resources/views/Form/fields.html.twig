@@ -1,0 +1,40 @@
+{% block ecommit_select2_select2entity_widget %}
+    {% spaceless %}
+        {{ form_widget(form) }}
+        <script type="text/javascript">
+            $(function() {
+                $("#{{ id }}").select2({
+                    minimumInputLength: {{ min_chars }},
+                    placeholder: 'Choose a value',
+                    allowClear: true,
+                    ajax: {
+                        url: "{{ url }}",
+                        dataType: 'json',
+                        data: function (term, page) {
+                            return {
+                                term: term,
+                                page: page
+                            }
+                        },
+                        results: function (data, page) {
+                            return {results: data };
+                        }
+                    },
+                    formatResult: function (data) {
+                        return data.label;
+                    },
+                    formatSelection: function (data) {
+                        return data.label;
+                    },
+                    id: function(bond){ return bond.key; },
+                    initSelection : function (element, callback) {
+                        var text = $(element).attr('data-selected-data');
+                        var data = {key: element.val(), label: text};
+                        callback(data);
+                    },
+                    width: "350px"
+                });
+            });
+        </script>
+    {% endspaceless %}
+{% endblock %}
