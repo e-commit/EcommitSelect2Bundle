@@ -1,0 +1,29 @@
+{
+    "name": "ecommit/select2-bundle",
+    "description": "This bundle provides select2 form types",
+    "keywords":     ["form", "jQuery", "Symfony", "select2"],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hubert Lecorche",
+            "email": "contact@e-commit.fr"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.3",
+        "symfony/form": "~2.3",
+        "doctrine/orm": "2.*",
+        "doctrine/doctrine-bundle": "1.*",
+    },
+    "autoload": {
+        "psr-0": { "Ecommit\\Select2Bundle": "" }
+    },
+    "target-dir": "Ecommit/Select2Bundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
