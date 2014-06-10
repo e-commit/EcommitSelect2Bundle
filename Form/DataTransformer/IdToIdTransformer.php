@@ -10,6 +10,7 @@
 
 namespace Ecommit\Select2Bundle\Form\DataTransformer;
 
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
