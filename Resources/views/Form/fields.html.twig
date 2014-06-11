@@ -27,8 +27,8 @@
                         window.Select2.util.markMatch(result.label, query.term, markup, escapeMarkup);
                         return markup.join("");
                     },
-                    formatSelection: function (data) {
-                        return data.label;
+                    formatSelection: function (object, container, escapeMarkup) {
+                        return escapeMarkup(object.label);
                     },
                     id: function(bond){ return bond.key; },
                     initSelection : function (element, callback) {
