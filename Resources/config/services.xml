@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="ecommit_select2.form.type.select2entityajax.class">Ecommit\Select2Bundle\Form\Type\Select2EntityAjaxType</parameter>
         <parameter key="ecommit_select2.form.type.select2entity.class">Ecommit\Select2Bundle\Form\Type\Select2EntityType</parameter>
+        <parameter key="ecommit_select2.form.type.select2choice.class">Ecommit\Select2Bundle\Form\Type\Select2ChoiceType</parameter>
     </parameters>
 
     <services>
@@ -17,6 +18,10 @@
 
         <service id="ecommit_select2.form.type.select2entity" class="%ecommit_select2.form.type.select2entity.class%">
             <tag name="form.type" alias="ecommit_javascript_select2entity" />
+        </service>
+
+        <service id="ecommit_select2.form.type.select2choice" class="%ecommit_select2.form.type.select2choice.class%">
+            <tag name="form.type" alias="ecommit_javascript_select2choice" />
         </service>
     </services>
 </container>

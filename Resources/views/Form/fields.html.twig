@@ -50,6 +50,13 @@
     {% endspaceless %}
 {% endblock %}
 
+{% block ecommit_javascript_select2choice_widget %}
+    {% spaceless %}
+        {{ form_widget(form) }}
+        {{ block('ecommit_javascript_select2_js') }}
+    {% endspaceless %}
+{% endblock %}
+
 {% block ecommit_javascript_select2_js %}
     <script type="text/javascript">
         $(function() {
