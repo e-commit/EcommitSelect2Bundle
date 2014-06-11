@@ -11,13 +11,13 @@
 namespace Ecommit\Select2Bundle\Form\Type;
 
 use Ecommit\Select2Bundle\Form\DataTransformer\EntityToIdTransformer;
-use Ecommit\Select2Bundle\Form\DataTransformer\IdToIdTransformer;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ReversedTransformer;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -44,9 +44,10 @@ class Select2EntityAjaxType extends AbstractSelect2Type
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['input'] == 'entity') {
-            $builder->addViewTransformer(new EntityToIdTransformer($options['query_builder'], $options['root_alias'], $options['identifier']));
+            $builder->addViewTransformer(new EntityToIdTransformer($options['query_builder'], $options['root_alias'], $options['identifier'], true));
         } else {
-            $builder->addViewTransformer(new IdToIdTransformer($options['query_builder'], $options['root_alias'], $options['identifier']));
+            $builder->addModelTransformer(new ReversedTransformer(new EntityToIdTransformer($options['query_builder'], $options['root_alias'], $options['identifier'], false)));
+            $builder->addViewTransformer(new EntityToIdTransformer($options['query_builder'], $options['root_alias'], $options['identifier'], true));
         }
     }
 
@@ -58,8 +59,10 @@ class Select2EntityAjaxType extends AbstractSelect2Type
         parent::buildView($view, $form, $options);
 
         $dataSelected = '';
-        if ($form->getData() && is_object($form->getData())) {
+        if ($options['input'] == 'entity' && $form->getData() && is_object($form->getData())) {
             $dataSelected = $this->extractLabel($form->getData(), $options['property']);
+        } elseif ($options['input'] == 'key' && $form->getNormData() && is_object($form->getNormData())) {
+            $dataSelected = $this->extractLabel($form->getNormData(), $options['property']);
         }
 
         $view->vars['url'] = $options['url'];

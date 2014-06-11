@@ -26,6 +26,7 @@ class EntityToIdTransformer implements DataTransformerInterface
 
     protected $rootAlias;
     protected $identifier;
+    protected $throwExceptionIfValueNotFoundInReverse;
 
     /**
      * @var PropertyAccessor
@@ -41,11 +42,12 @@ class EntityToIdTransformer implements DataTransformerInterface
      * @param string $rootAlias     Doctrine Root Alias in Query Builder
      * @param sting $identifier  Identifier name
      */
-    public function __construct(QueryBuilder $queryBuilder, $rootAlias, $identifier)
+    public function __construct(QueryBuilder $queryBuilder, $rootAlias, $identifier, $throwExceptionIfValueNotFoundInReverse = true)
     {
         $this->queryBuilder = $queryBuilder;
         $this->rootAlias = $rootAlias;
         $this->identifier = $identifier;
+        $this->throwExceptionIfValueNotFoundInReverse = $throwExceptionIfValueNotFoundInReverse;
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -104,7 +106,11 @@ class EntityToIdTransformer implements DataTransformerInterface
             }
         }
         catch(\Exception $e) {
-            throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found or is not unique', $value));
+            if ($this->throwExceptionIfValueNotFoundInReverse) {
+                throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found or is not unique', $value));
+            } else {
+                return null;
+            }
         }
 
         return $entity;
