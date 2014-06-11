@@ -5,7 +5,7 @@
             $(function() {
                 $("#{{ id }}").select2({
                     minimumInputLength: {{ min_chars }},
-                    placeholder: 'Choose a value',
+                    placeholder: '{{ place_holder }}',
                     allowClear: true,
                     ajax: {
                         url: "{{ url }}",
@@ -39,4 +39,23 @@
             });
         </script>
     {% endspaceless %}
+{% endblock %}
+
+{% block ecommit_javascript_select2entity_widget %}
+    {% spaceless %}
+        {{ form_widget(form) }}
+        {{ block('ecommit_javascript_select2_js') }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block ecommit_javascript_select2_js %}
+    <script type="text/javascript">
+        $(function() {
+            $("#{{ id }}").select2({
+                placeholder: '{{ place_holder }}',
+                allowClear: true,
+                width: "350px"
+            });
+        });
+    </script>
 {% endblock %}

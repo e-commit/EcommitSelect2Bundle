@@ -6,12 +6,17 @@
 
     <parameters>
         <parameter key="ecommit_select2.form.type.select2entityajax.class">Ecommit\Select2Bundle\Form\Type\Select2EntityAjaxType</parameter>
+        <parameter key="ecommit_select2.form.type.select2entity.class">Ecommit\Select2Bundle\Form\Type\Select2EntityType</parameter>
     </parameters>
 
     <services>
         <service id="ecommit_select2.form.type.select2entityajax" class="%ecommit_select2.form.type.select2entityajax.class%">
             <argument type="service" id="doctrine" on-invalid="null" />
             <tag name="form.type" alias="ecommit_javascript_select2entityajax" />
+        </service>
+
+        <service id="ecommit_select2.form.type.select2entity" class="%ecommit_select2.form.type.select2entity.class%">
+            <tag name="form.type" alias="ecommit_javascript_select2entity" />
         </service>
     </services>
 </container>

@@ -14,7 +14,6 @@ use Ecommit\Select2Bundle\Form\DataTransformer\EntityToIdTransformer;
 use Ecommit\Select2Bundle\Form\DataTransformer\IdToIdTransformer;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -23,7 +22,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class Select2EntityAjaxType extends AbstractType
+class Select2EntityAjaxType extends AbstractSelect2Type
 {
     /**
      * @var ManagerRegistry
@@ -56,6 +55,8 @@ class Select2EntityAjaxType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        parent::buildView($view, $form, $options);
+
         $dataSelected = '';
         if ($form->getData() && is_object($form->getData())) {
             $accessor = PropertyAccess::createPropertyAccessor();
@@ -74,6 +75,8 @@ class Select2EntityAjaxType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        parent::setDefaultOptions($resolver);
+
         $registry = $this->registry;
         $emNormalizer = function (Options $options, $em) use ($registry) {
             if (null !== $em) {
