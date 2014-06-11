@@ -59,8 +59,7 @@ class Select2EntityAjaxType extends AbstractSelect2Type
 
         $dataSelected = '';
         if ($form->getData() && is_object($form->getData())) {
-            $accessor = PropertyAccess::createPropertyAccessor();
-            $dataSelected = $accessor->getValue($form->getData(), $options['property']);
+            $dataSelected = $this->extractLabel($form->getData(), $options['property']);
         }
 
         $view->vars['url'] = $options['url'];
@@ -137,7 +136,7 @@ class Select2EntityAjaxType extends AbstractSelect2Type
             'query_builder'     => null,
             'root_alias'        => null,
             'identifier'        => null,
-            'property'          => '__toString',
+            'property'          => null,
             'min_chars'         => 1,
 
             'error_bubbling'    => false,
@@ -174,5 +173,22 @@ class Select2EntityAjaxType extends AbstractSelect2Type
     public function getName()
     {
         return 'ecommit_javascript_select2entityajax';
+    }
+
+    /**
+     * @param object $object
+     * @param string $property
+     * @throws \Exception
+     */
+    protected function extractLabel($object, $property)
+    {
+        if ($property) {
+            $accessor = PropertyAccess::createPropertyAccessor();
+            return $accessor->getValue($object, $property);
+        } elseif (method_exists($object, '__toString')) {
+            return (string) $object;
+        } else {
+            throw new \Exception('"property" option or "__toString" method must be defined"');
+        }
     }
 } 
