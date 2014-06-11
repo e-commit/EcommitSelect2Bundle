@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the agbaug package.
+ * This file is part of the EcommitSelect2Bundle package.
  *
  * (c) E-commit <contact@e-commit.fr>
  *
