@@ -23,6 +23,7 @@ abstract class AbstractSelect2Type extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['place_holder'] = $options['place_holder'];
+        $view->vars['width'] = $options['width'];
     }
 
     /**
@@ -32,6 +33,7 @@ abstract class AbstractSelect2Type extends AbstractType
     {
         $resolver->setDefaults(array(
             'place_holder' => 'Choose a value',
+            'width' => 'off',
         ));
     }
 } 
