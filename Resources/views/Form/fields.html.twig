@@ -22,8 +22,10 @@
                             return {results: data.results, more: more };
                         }
                     },
-                    formatResult: function (data) {
-                        return data.label;
+                    formatResult: function(result, container, query, escapeMarkup) {
+                        var markup=[];
+                        window.Select2.util.markMatch(result.label, query.term, markup, escapeMarkup);
+                        return markup.join("");
                     },
                     formatSelection: function (data) {
                         return data.label;
