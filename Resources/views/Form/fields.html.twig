@@ -1,6 +1,6 @@
 {% block ecommit_javascript_select2entityajax_widget %}
     {% spaceless %}
-        {{ form_widget(form) }}
+        <span class="select2-ajax">{{ form_widget(form) }}</span>
         <script type="text/javascript">
             $(function() {
                 $("#{{ id }}").select2({
@@ -28,6 +28,7 @@
                         return markup.join("");
                     },
                     formatSelection: function (object, container, escapeMarkup) {
+                        container.attr('title', object.label);
                         return escapeMarkup(object.label);
                     },
                     id: function(bond){ return bond.key; },
@@ -63,6 +64,7 @@
             $("#{{ id }}").select2({
                 placeholder: '{{ place_holder }}',
                 allowClear: true,
+                dropdownAutoWidth: true,
                 width: '{{ width }}'
             });
         });
