@@ -39,11 +39,15 @@ class EntityToIdTransformer implements DataTransformerInterface
      * Constructor
      *
      * @param QueryBuilder $queryBuilder
-     * @param string $rootAlias     Doctrine Root Alias in Query Builder
-     * @param sting $identifier  Identifier name
+     * @param string $rootAlias Doctrine Root Alias in Query Builder
+     * @param sting $identifier Identifier name
      */
-    public function __construct(QueryBuilder $queryBuilder, $rootAlias, $identifier, $throwExceptionIfValueNotFoundInReverse = true)
-    {
+    public function __construct(
+        QueryBuilder $queryBuilder,
+        $rootAlias,
+        $identifier,
+        $throwExceptionIfValueNotFoundInReverse = true
+    ) {
         $this->queryBuilder = $queryBuilder;
         $this->rootAlias = $rootAlias;
         $this->identifier = $identifier;
@@ -93,21 +97,23 @@ class EntityToIdTransformer implements DataTransformerInterface
             $hash = $this->getCacheHash($value);
             if (array_key_exists($hash, $this->resultsCached)) {
                 $entity = $this->resultsCached[$hash];
-            }
-            else {
+            } else {
                 //Result not in cache
 
-                $query = $this->queryBuilder->andWhere(sprintf('%s.%s = :key_transformer', $this->rootAlias, $this->identifier))
+                $query = $this->queryBuilder->andWhere(
+                    sprintf('%s.%s = :key_transformer', $this->rootAlias, $this->identifier)
+                )
                     ->setParameter('key_transformer', $value)
                     ->getQuery();
 
                 $entity = $query->getSingleResult();
                 $this->resultsCached[$hash] = $entity; //Saves result in cache
             }
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             if ($this->throwExceptionIfValueNotFoundInReverse) {
-                throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found or is not unique', $value));
+                throw new TransformationFailedException(
+                    sprintf('The entity with key "%s" could not be found or is not unique', $value)
+                );
             } else {
                 return null;
             }
@@ -123,11 +129,15 @@ class EntityToIdTransformer implements DataTransformerInterface
      */
     protected function getCacheHash($id)
     {
-        return md5(json_encode(array(
-            spl_object_hash($this->queryBuilder),
-            $this->rootAlias,
-            $this->identifier,
-            (string)$id,
-        )));
+        return md5(
+            json_encode(
+                array(
+                    spl_object_hash($this->queryBuilder),
+                    $this->rootAlias,
+                    $this->identifier,
+                    (string)$id,
+                )
+            )
+        );
     }
 } 

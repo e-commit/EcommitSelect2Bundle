@@ -21,9 +21,12 @@ class TwigFormPass implements CompilerPassInterface
             return;
         }
 
-        $container->setParameter('twig.form.resources', array_merge(
+        $container->setParameter(
+            'twig.form.resources',
+            array_merge(
                 $container->getParameter('twig.form.resources'),
                 array('EcommitSelect2Bundle:Form:fields.html.twig')
-        ));
+            )
+        );
     }
 } 

@@ -31,9 +31,11 @@ abstract class AbstractSelect2Type extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'place_holder' => 'Choose a value',
-            'width' => 'off',
-        ));
+        $resolver->setDefaults(
+            array(
+                'place_holder' => 'Choose a value',
+                'width' => 'off',
+            )
+        );
     }
 } 

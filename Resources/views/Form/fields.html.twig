@@ -2,7 +2,7 @@
     {% spaceless %}
         <span class="select2-ajax">{{ form_widget(form) }}</span>
         <script type="text/javascript">
-            $(function() {
+            $(function () {
                 $("#{{ id }}").select2({
                     minimumInputLength: {{ min_chars }},
                     placeholder: '{{ place_holder }}',
@@ -19,11 +19,11 @@
                         results: function (data, page) {
                             var more = page < data.totalPages;
 
-                            return {results: data.results, more: more };
+                            return {results: data.results, more: more};
                         }
                     },
-                    formatResult: function(result, container, query, escapeMarkup) {
-                        var markup=[];
+                    formatResult: function (result, container, query, escapeMarkup) {
+                        var markup = [];
                         window.Select2.util.markMatch(result.label, query.term, markup, escapeMarkup);
                         return markup.join("");
                     },
@@ -31,8 +31,10 @@
                         container.attr('title', object.label);
                         return escapeMarkup(object.label);
                     },
-                    id: function(bond){ return bond.key; },
-                    initSelection : function (element, callback) {
+                    id: function (bond) {
+                        return bond.key;
+                    },
+                    initSelection: function (element, callback) {
                         var text = $(element).attr('data-selected-data');
                         var data = {key: element.val(), label: text};
                         callback(data);
@@ -60,7 +62,7 @@
 
 {% block ecommit_javascript_select2_js %}
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             $("#{{ id }}").select2({
                 placeholder: '{{ place_holder }}',
                 allowClear: true,

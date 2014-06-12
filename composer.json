@@ -1,7 +1,7 @@
 {
     "name": "ecommit/select2-bundle",
     "description": "This bundle provides select2 form types",
-    "keywords":     ["form", "jQuery", "Symfony", "select2"],
+    "keywords": ["form", "jQuery", "Symfony", "select2"],
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -18,7 +18,7 @@
         "doctrine/doctrine-bundle": "1.*"
     },
     "autoload": {
-        "psr-0": { "Ecommit\\Select2Bundle": "" }
+        "psr-0": {"Ecommit\\Select2Bundle": ""}
     },
     "target-dir": "Ecommit/Select2Bundle",
     "extra": {

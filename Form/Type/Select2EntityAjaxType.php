@@ -44,10 +44,33 @@ class Select2EntityAjaxType extends AbstractSelect2Type
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['input'] == 'entity') {
-            $builder->addViewTransformer(new EntityToIdTransformer($options['query_builder'], $options['root_alias'], $options['identifier'], true));
+            $builder->addViewTransformer(
+                new EntityToIdTransformer(
+                    $options['query_builder'],
+                    $options['root_alias'],
+                    $options['identifier'],
+                    true
+                )
+            );
         } else {
-            $builder->addModelTransformer(new ReversedTransformer(new EntityToIdTransformer($options['query_builder'], $options['root_alias'], $options['identifier'], false)));
-            $builder->addViewTransformer(new EntityToIdTransformer($options['query_builder'], $options['root_alias'], $options['identifier'], true));
+            $builder->addModelTransformer(
+                new ReversedTransformer(
+                    new EntityToIdTransformer(
+                        $options['query_builder'],
+                        $options['root_alias'],
+                        $options['identifier'],
+                        false
+                    )
+                )
+            );
+            $builder->addViewTransformer(
+                new EntityToIdTransformer(
+                    $options['query_builder'],
+                    $options['root_alias'],
+                    $options['identifier'],
+                    true
+                )
+            );
         }
     }
 
@@ -73,6 +96,24 @@ class Select2EntityAjaxType extends AbstractSelect2Type
     }
 
     /**
+     * @param object $object
+     * @param string $property
+     * @throws \Exception
+     */
+    protected function extractLabel($object, $property)
+    {
+        if ($property) {
+            $accessor = PropertyAccess::createPropertyAccessor();
+
+            return $accessor->getValue($object, $property);
+        } elseif (method_exists($object, '__toString')) {
+            return (string)$object;
+        } else {
+            throw new \Exception('"property" option or "__toString" method must be defined"');
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -91,9 +132,9 @@ class Select2EntityAjaxType extends AbstractSelect2Type
         $queryBuilderNormalizer = function (Options $options, $queryBuilder) {
             $em = $options['em'];
             $class = $options['class'];
-            
+
             if ($queryBuilder == null) {
-                $queryBuilder= $em->createQueryBuilder()
+                $queryBuilder = $em->createQueryBuilder()
                     ->from($class, 'c')
                     ->select('c');
             }
@@ -103,7 +144,9 @@ class Select2EntityAjaxType extends AbstractSelect2Type
             }
 
             if (!$queryBuilder instanceof QueryBuilder) {
-                throw new InvalidConfigurationException('"query_builder" must be an instance of Doctrine\ORM\QueryBuilder');
+                throw new InvalidConfigurationException(
+                    '"query_builder" must be an instance of Doctrine\ORM\QueryBuilder'
+                );
             }
 
             return $queryBuilder;
@@ -133,33 +176,40 @@ class Select2EntityAjaxType extends AbstractSelect2Type
             return $identifiers[0];
         };
 
-        $resolver->setDefaults(array(
-            'input'             => 'entity',
-            'em'                => null,
-            'query_builder'     => null,
-            'root_alias'        => null,
-            'identifier'        => null,
-            'property'          => null,
-            'min_chars'         => 1,
+        $resolver->setDefaults(
+            array(
+                'input' => 'entity',
+                'em' => null,
+                'query_builder' => null,
+                'root_alias' => null,
+                'identifier' => null,
+                'property' => null,
+                'min_chars' => 1,
+                'error_bubbling' => false,
+            )
+        );
 
-            'error_bubbling'    => false,
-        ));
+        $resolver->setRequired(
+            array(
+                'class',
+                'url',
+            )
+        );
 
-        $resolver->setRequired(array(
-            'class',
-            'url',
-        ));
+        $resolver->setAllowedValues(
+            array(
+                'input' => array('entity', 'key'),
+            )
+        );
 
-        $resolver->setAllowedValues(array(
-            'input'     => array('entity', 'key'),
-        ));
-
-        $resolver->setNormalizers(array(
-            'em' => $emNormalizer,
-            'query_builder' => $queryBuilderNormalizer,
-            'root_alias' => $rootAliasNormalizer,
-            'identifier' => $identifierNormalizer,
-        ));
+        $resolver->setNormalizers(
+            array(
+                'em' => $emNormalizer,
+                'query_builder' => $queryBuilderNormalizer,
+                'root_alias' => $rootAliasNormalizer,
+                'identifier' => $identifierNormalizer,
+            )
+        );
     }
 
     /**
@@ -176,22 +226,5 @@ class Select2EntityAjaxType extends AbstractSelect2Type
     public function getName()
     {
         return 'ecommit_javascript_select2entityajax';
-    }
-
-    /**
-     * @param object $object
-     * @param string $property
-     * @throws \Exception
-     */
-    protected function extractLabel($object, $property)
-    {
-        if ($property) {
-            $accessor = PropertyAccess::createPropertyAccessor();
-            return $accessor->getValue($object, $property);
-        } elseif (method_exists($object, '__toString')) {
-            return (string) $object;
-        } else {
-            throw new \Exception('"property" option or "__toString" method must be defined"');
-        }
     }
 } 
